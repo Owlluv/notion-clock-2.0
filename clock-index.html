@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EST Clock Widget</title>
+  <style>
+    #clock-container {
+      display: flex;
+      font-family: Lyon-text, Georgia, ui-serif, serif;
+      flex-direction: column;
+      flex-shrink: 0;
+      flex-grow: 1;
+      justify-content: center;
+      align-items: left;
+      max-width: 95%;
+      margin: auto;
+      color: rgba(225,225,225,0.81);
+      border-radius: 3px;
+      padding: 16px 16px 16px 12px;
+    }
+
+    #clock {
+   
+      font-size: 32px;
+      text-align: left;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    #location {
+      font-size: 15px;
+      text-align: left;
+      font-weight: bold;
+      color: rgba(225, 225, 225, 0.81);
+      margin-bottom: 5px;
+    }
+
+    #date {
+      font-size: 15px;
+      text-align: left;
+    }
+  </style>
+ <script>
+    function updateClock() {
+      var date = new Date();
+      var estDate = new Date(date.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+      var hours = estDate.getHours();
+      var minutes = estDate.getMinutes();
+      var period = "am";
+      var day = estDate.getDate();
+      var month = estDate.getMonth();
+      var daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+
+      // Determine period (AM/PM) and convert to 12-hour format
+      if (hours >= 12) {
+        period = "pm";
+        hours = hours % 12;
+      }
+
+      // Handle midnight and noon
+      if (hours === 0) {
+        hours = 12;
+      }
+
+      // Add leading zeros to minutes
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+
+      // Format the time as HH:MM AM/PM
+      var time = hours + ':' + minutes + ' ' + period;
+
+      // Update the clock element
+      document.getElementById('clock').textContent = time;
+
+      // Update the location element
+      document.getElementById('location').textContent = 'BOSTON';
+
+      // Format the date as full day name, full month name, DD, YYYY
+      var dayOfWeek = daysOfWeek[estDate.getDay()];
+      var monthName = months[month];
+      var dateFormatted = dayOfWeek + ', ' + monthName + ' ' + day + ', ' + estDate.getFullYear();
+
+      // Update the date element
+      document.getElementById('date').textContent = dateFormatted;
+    }
+
+    // Update the clock every second
+    setInterval(updateClock, 1000);
+  </script>
+</head>
+<body>
+  <div id="clock-container">
+    <div id="location"></div>
+    <div id="clock"></div>
+    <div id="date"></div>
+  </div>
+</body>
+</html>
